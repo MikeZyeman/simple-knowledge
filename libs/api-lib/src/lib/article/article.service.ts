@@ -30,16 +30,16 @@ export default class ArticleService {
     const articles : ArticleThumbnailModel[] = [];
     for (const ref of refs.data) {
 
-      const docs: any = await client.query(
+      const doc: any = await client.query(
         Get(ref)
       );
-      this.hasNoData(docs);
+      this.hasNoData(doc);
 
       articles.push({
         id: ref.id,
-        title: docs.data.title,
+        title: doc.data.title,
         category: null,
-        text: docs.data.text.substring(0, 100) + ' ...',
+        text: doc.data.text.substring(0, 100) + ' ...',
       })
     }
 
@@ -47,8 +47,6 @@ export default class ArticleService {
   }
 
   async getArticle(id: number): Promise<ArticleModel> {
-    console.log(id);
-
     const doc: any = await client.query(
       Get(
         Ref(
@@ -67,6 +65,7 @@ export default class ArticleService {
   }
 
   async addPost(data: ArticleModel) {
+    delete data.id;
 
     const doc = await client.query(
       Create(
@@ -79,6 +78,8 @@ export default class ArticleService {
   }
 
   async updatePost(id: number, data: ArticleModel) {
+    delete data.id;
+
     const doc = await client.query(
       Update(
         Ref(Collection('Articles'), id),

@@ -11,7 +11,7 @@ const SetArticleController = (app) => {
   const baseRoute = '/article';
 
   //get
-  app.get(`${baseRoute}`, async (req, res) => {
+  app.get(`${baseRoute}`, (req, res) => {
     articleService.getArticles()
       .then((data) => {
         res.send(data);
