@@ -235,6 +235,90 @@
           }
         }
       }
+    },
+    "fql": {
+      "root": "apps/fql",
+      "sourceRoot": "apps/fql/src",
+      "projectType": "application",
+      "prefix": "fql",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/fql",
+            "main": "apps/fql/src/main.ts",
+            "tsConfig": "apps/fql/tsconfig.app.json",
+            "assets": [
+              "apps/fql/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/fql/src/environments/environment.ts",
+                  "with": "apps/fql/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "fql:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/fql/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/fql"
+          ],
+          "options": {
+            "jestConfig": "apps/fql/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "fql-lib": {
+      "root": "libs/fql-lib",
+      "sourceRoot": "libs/fql-lib/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/fql-lib/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/fql-lib"
+          ],
+          "options": {
+            "jestConfig": "libs/fql-lib/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

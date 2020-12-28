@@ -18,7 +18,9 @@
       "@simple-knowledge/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@simple-knowledge/ui": ["libs/ui/src/index.ts"],
       "@simple-knowledge/api-lib": ["libs/api-lib/src/index.ts"],
-      "@simple-knowledge/ui-lib": ["libs/ui-lib/src/index.ts"]
+      "@simple-knowledge/ui-lib": ["libs/ui-lib/src/index.ts"],
+      "@simple-knowledge/fql": ["libs/fql/src/index.ts"],
+      "@simple-knowledge/fql-lib": ["libs/fql-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

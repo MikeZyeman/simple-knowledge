@@ -19,7 +19,7 @@ import { CategoryModel } from '@simple-knowledge/api-interfaces';
 
 export default class CategoryService {
 
-  async getCategories() {
+  async getCategories(): Promise<CategoryModel[]> {
     const refs: any = await client.query(
       Paginate(
         Documents(Collection('Categories'))
@@ -44,7 +44,7 @@ export default class CategoryService {
     return categories;
   }
 
-  async getCategory(id: number) {
+  async getCategory(id: number): Promise<CategoryModel> {
     const doc: any = await client.query(
       Get(
         Ref(
@@ -58,6 +58,16 @@ export default class CategoryService {
       id: doc.ref.id,
       title: doc.data.title
     }
+  }
+
+  async addCategory(category: CategoryModel) {
+    const doc = await client.query(
+      Create(
+        Collection('Category')
+      )
+    );
+
+    console.log(doc)
   }
 
   private hasNoData(obj: any) {
