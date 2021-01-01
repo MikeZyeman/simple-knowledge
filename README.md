@@ -6,3 +6,12 @@ Every user can add, update and delete an article.
 Articles can be categorized with multiple tags.
 
 The database is Faunadb.
+
+
+## Setup
+
+### Faunadb
+
+### Express App
+
+### React App

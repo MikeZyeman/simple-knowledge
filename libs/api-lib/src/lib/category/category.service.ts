@@ -1,8 +1,5 @@
 import * as faunadb from 'faunadb';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
-const client = new faunadb.Client({ secret: process.env.FAUNADB_KEY})
 const {
   Paginate,
   Get,
@@ -19,8 +16,14 @@ import { CategoryModel } from '@simple-knowledge/api-interfaces';
 
 export default class CategoryService {
 
+  client: any;
+
+  constructor(key) {
+    this.client = new faunadb.Client({ secret: key})
+  }
+
   async getCategories(): Promise<CategoryModel[]> {
-    const refs: any = await client.query(
+    const refs: any = await this.client.query(
       Paginate(
         Documents(Collection('Categories'))
       )
@@ -30,7 +33,7 @@ export default class CategoryService {
     const categories: CategoryModel[] = [];
     for (const ref of refs.data) {
 
-      const doc: any = await client.query(
+      const doc: any = await this.client.query(
         Get(ref)
       )
       this.hasNoData(doc);
@@ -45,7 +48,7 @@ export default class CategoryService {
   }
 
   async getCategory(id: number): Promise<CategoryModel> {
-    const doc: any = await client.query(
+    const doc: any = await this.client.query(
       Get(
         Ref(
           Collection('Categories'),
@@ -61,7 +64,7 @@ export default class CategoryService {
   }
 
   async addCategory(category: CategoryModel) {
-    const doc = await client.query(
+    const doc = await this.client.query(
       Create(
         Collection('Category')
       )
