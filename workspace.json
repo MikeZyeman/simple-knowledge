@@ -250,10 +250,7 @@
           "options": {
             "outputPath": "dist/apps/fql",
             "main": "apps/fql/src/main.ts",
-            "tsConfig": "apps/fql/tsconfig.app.json",
-            "assets": [
-              "apps/fql/src/assets"
-            ]
+            "tsConfig": "apps/fql/tsconfig.app.json"
           },
           "configurations": {
             "production": {

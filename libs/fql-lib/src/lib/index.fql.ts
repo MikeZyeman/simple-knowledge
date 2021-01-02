@@ -6,10 +6,14 @@ const {
   CreateIndex
 } = faunadb.query;
 
+export interface FieldModel {
+  field: string[];
+}
+
 export interface IndexModel {
   name: string;
   source: any;
-  terms?: any[];
+  terms?: FieldModel[];
   values?: any[];
 
   unique?: boolean;
@@ -20,6 +24,6 @@ export interface IndexModel {
 
 export const createIndex = async (index: IndexModel) => {
   return await client.query((
-    CreateIndex
+    CreateIndex(index)
   ))
 }
