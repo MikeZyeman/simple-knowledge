@@ -1,16 +1,14 @@
-import * as faunadb from 'faunadb';
+import { Client, query } from 'faunadb';
+
 
 const {
   Paginate,
   Get,
   Ref,
   Create,
-  Update,
-  Delete,
-
   Collection,
   Documents
-} = faunadb.query;
+} = query;
 
 import { CategoryModel } from '@simple-knowledge/api-interfaces';
 
@@ -19,7 +17,7 @@ export default class CategoryService {
   client: any;
 
   constructor(key) {
-    this.client = new faunadb.Client({ secret: key})
+    this.client = new Client({ secret: key})
   }
 
   async getCategories(): Promise<CategoryModel[]> {
@@ -28,7 +26,7 @@ export default class CategoryService {
         Documents(Collection('Categories'))
       )
     )
-    this.hasNoData(refs);
+    CategoryService.hasNoData(refs);
 
     const categories: CategoryModel[] = [];
     for (const ref of refs.data) {
@@ -36,7 +34,7 @@ export default class CategoryService {
       const doc: any = await this.client.query(
         Get(ref)
       )
-      this.hasNoData(doc);
+      CategoryService.hasNoData(doc);
 
       categories.push({
         id: ref.id,
@@ -73,7 +71,7 @@ export default class CategoryService {
     console.log(doc)
   }
 
-  private hasNoData(obj: any) {
+  private static hasNoData(obj: any) {
     if (!('data' in obj)) throw new Error('No data in response');
   }
 }

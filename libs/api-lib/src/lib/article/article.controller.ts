@@ -5,9 +5,9 @@ function errorMessage(e, res) {
   res.sendStatus(500);
 }
 
-const SetArticleController = (app) => {
+export const SetArticleController = (app, key) => {
 
-  const articleService = new ArticleService();
+  const articleService = new ArticleService(key);
   const baseRoute = '/article';
 
   //get
@@ -31,6 +31,9 @@ const SetArticleController = (app) => {
   //get by category
 
 
+  app.post(`${baseRoute}/:id`, async (req, res) => {
+
+  })
+
 }
 
-export default SetArticleController;

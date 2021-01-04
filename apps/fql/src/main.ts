@@ -1,12 +1,12 @@
-import { createCollection, createIndex, IndexModel } from '@simple-knowledge/fql-lib';
+import { createCollection, createIndex } from '@simple-knowledge/fql-lib';
 
 async function setupFaunaDB() {
 
   //Create collections
-  /*
+
   await createCollection("Categories");
   await createCollection("Articles");
-*/
+
 
   //Create index
   await createIndex({
@@ -30,4 +30,5 @@ setupFaunaDB()
   })
   .catch((err) => {
     console.log(err)
+    process.exit(1);
   })

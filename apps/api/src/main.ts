@@ -1,6 +1,8 @@
 import * as express from 'express';
 import { Message } from '@simple-knowledge/api-interfaces';
-import SetArticleController from '../../../libs/api-lib/src/lib/article/article.controller';
+import { SetArticleController, SetCategoryController } from '@simple-knowledge/api-lib';
+
+import { environment } from './environments/environment';
 
 const app = express();
 
@@ -10,7 +12,8 @@ app.get('/api', (req, res) => {
   res.send(greeting);
 });
 
-SetArticleController(app);
+SetArticleController(app, environment.faunakey);
+SetCategoryController(app, environment.faunakey);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {

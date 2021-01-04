@@ -1,8 +1,8 @@
-import * as faunadb from 'faunadb';
+import { query, Client} from 'faunadb';
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const client = new faunadb.Client({ secret: process.env.FAUNADB_KEY})
 const {
   Paginate,
   Get,
@@ -13,27 +13,33 @@ const {
 
   Collection,
   Documents
-} = faunadb.query;
+} = query;
 
 import { ArticleModel, ArticleThumbnailModel } from '@simple-knowledge/api-interfaces';
 
 export default class ArticleService {
 
+  client: any;
+
+  constructor(key) {
+    this.client = new Client({ secret: key })
+  }
+
   async getArticles(): Promise<ArticleThumbnailModel[]> {
-    const refs: any = await client.query(
+    const refs: any = await this.client.query(
       Paginate(
         Documents(Collection('Articles'))
       )
     ).catch(e => console.log(e));
-    this.hasNoData(refs);
+    ArticleService.hasNoData(refs);
 
     const articles : ArticleThumbnailModel[] = [];
     for (const ref of refs.data) {
 
-      const doc: any = await client.query(
+      const doc: any = await this.client.query(
         Get(ref)
       );
-      this.hasNoData(doc);
+      ArticleService.hasNoData(doc);
 
       articles.push({
         id: ref.id,
@@ -47,7 +53,7 @@ export default class ArticleService {
   }
 
   async getArticle(id: number): Promise<ArticleModel> {
-    const doc: any = await client.query(
+    const doc: any = await this.client.query(
       Get(
         Ref(
           Collection('Articles'),
@@ -64,10 +70,10 @@ export default class ArticleService {
     }
   }
 
-  async addPost(data: ArticleModel) {
+  async addArticle(data: ArticleModel) {
     delete data.id;
 
-    const doc = await client.query(
+    const doc = await this.client.query(
       Create(
         Collection('Articles'),
         { data }
@@ -77,10 +83,10 @@ export default class ArticleService {
     console.log(doc);
   }
 
-  async updatePost(id: number, data: ArticleModel) {
+  async updateArticle(id: number, data: ArticleModel) {
     delete data.id;
 
-    const doc = await client.query(
+    const doc = await this.client.query(
       Update(
         Ref(Collection('Articles'), id),
         { data }
@@ -91,15 +97,17 @@ export default class ArticleService {
 
   }
 
-  async removePost(id: number) {
-    const doc = await client.query(
+  async removeArticle(id: number) {
+    const doc = await this.client.query(
       Delete(
         Ref(Collection('Articles'), id)
       )
     )
+
+    console.log(doc);
   }
 
-  private hasNoData(obj: any) {
+  private static hasNoData(obj: any) {
     if (!('data' in obj)) throw new Error('No data in response');
   }
 }

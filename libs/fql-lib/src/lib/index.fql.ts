@@ -1,10 +1,11 @@
-import * as faunadb from 'faunadb';
-import getFaunaKey from './environment.fql';
+import { getFaunaKey } from './environment.fql';
+import { Client, query } from 'faunadb';
 
-const client = new faunadb.Client({ secret: getFaunaKey()})
+const client = new Client({ secret: getFaunaKey()})
 const {
-  CreateIndex
-} = faunadb.query;
+  CreateIndex,
+  Collection
+} = query;
 
 export interface FieldModel {
   field: string[];
@@ -23,7 +24,18 @@ export interface IndexModel {
 }
 
 export const createIndex = async (index: IndexModel) => {
+
+  const terms = [];
+
+  console.log(index.terms);
+
   return await client.query((
-    CreateIndex(index)
+    CreateIndex({
+      name: index.name,
+      source: Collection(index.source),
+      terms: terms,
+      serialized: index.serialized,
+      unique: index.unique
+    })
   ))
 }

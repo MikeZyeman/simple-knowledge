@@ -1,14 +1,13 @@
 import CategoryService from './category.service';
 
-
 function errorMessage(e, res) {
   console.log(e);
   res.sendStatus(500);
 }
 
-const SetCategoryController = (app) => {
+export const SetCategoryController = (app, key) => {
 
-  const categoryService = new CategoryService();
+  const categoryService = new CategoryService(key);
   const baseRoute = '/category'
 
   //get
@@ -25,5 +24,3 @@ const SetCategoryController = (app) => {
       .catch((e) => errorMessage(e, res))
   })
 }
-
-export default SetCategoryController;
